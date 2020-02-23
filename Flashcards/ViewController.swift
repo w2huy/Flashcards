@@ -41,6 +41,11 @@ class ViewController: UIViewController {
         }
         isFront = !isFront
     }
+    
+    func updateFlashcard(question:String, answer:String)  {
+        backLabel.text = answer
+        frontLabel.text = question
+    }
 
     func buttonStyle(btn:UIButton) {
         btn.layer.borderWidth = 3.0
@@ -80,5 +85,10 @@ class ViewController: UIViewController {
         btnOptionThree.isHidden = true
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let navigationController = segue.destination as! UINavigationController
+        let creationController = navigationController.topViewController as! CreationViewController
+        creationController.flashcardsController = self
+    }
 }
 
