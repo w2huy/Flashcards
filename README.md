@@ -7,7 +7,7 @@ In this lab we will make our app finally a fully functional app that you can act
 
 ### App Walk-though
 
-<img src="http://g.recordit.co/H4TDVURCyU.gif" width=200><br>
+<img src="http://g.recordit.co/JV1VrtVgih.gif" width=200><br>
 
 ## Required
 - [x] User can browse through multiple flashcards
@@ -24,8 +24,6 @@ In this lab we will make our app finally a fully functional app that you can act
 Our Flashcard app and focus on how to add and customize views to be displayed on the screen. By the end of this lab you should have a basic Flashcard app that can display a question, and on tap display the answer to the question. We're able to create a new screen where users can create new flashcards right from the app. Whenever you want to study something new you can just create a new flashcard!
 
 ### App Walk-though
-
-<img src="http://g.recordit.co/JV1VrtVgih.gif" width=200><br>
 
 ## Required
 - [X] User can open the creation screen
