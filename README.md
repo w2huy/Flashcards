@@ -14,9 +14,9 @@ In this lab we will make our app finally a fully functional app that you can act
 - [x] User can re-open the app and see previously created flashcards
 - [x] Push code to GitHub
 ## Optional
-- [ ] User can delete a flashcard
-- [ ] User can edit existing flashcard
-- [ ] User can store multiple choice questions
+- [x] User can delete a flashcard
+- [x] User can edit existing flashcard
+- [x] User can store multiple choice questions
 
 ## Lab 2
 
@@ -35,7 +35,7 @@ Our Flashcard app and focus on how to add and customize views to be displayed on
 ## Optional
 - [x] User gets an error if they try to create a new flashcard with no question or answer
 - [x] User can edit existing flashcard
-- [ ] User can add multiple choice answers in the creation screen
+- [x] User can add multiple choice answers in the creation screen
 
 ## Lab 1
 
