@@ -7,7 +7,7 @@ In this lab we will make our app finally a fully functional app that you can act
 
 ### App Walk-though
 
-<img src="YOUR_GIF_URL_HERE" width=200><br>
+<img src="http://g.recordit.co/H4TDVURCyU.gif" width=200><br>
 
 ## Required
 - [x] User can browse through multiple flashcards
