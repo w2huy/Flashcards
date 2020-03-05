@@ -15,6 +15,17 @@ class CreationViewController: UIViewController {
     @IBOutlet weak var questionField: UITextField!
     @IBOutlet weak var answerField: UITextField!
     
+    @IBOutlet weak var ans1TextField: UITextField!
+    @IBOutlet weak var ans2TextField: UITextField!
+    @IBOutlet weak var ans3TextField: UITextField!
+    
+    var initialQuestion: String?
+    var initialAnwser: String?
+    
+    var initialans1: String?
+    var initialans2: String?
+    var initialans3: String?
+    
     func displayAlert() {
         let alert = UIAlertController(title: "Missing Text", message: "You need to fill out all fields to update flashcards", preferredStyle: .alert)
         
@@ -28,8 +39,13 @@ class CreationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
         // Do any additional setup after loading the view.
+        questionField.text = initialQuestion
+        answerField.text = initialAnwser
+        
+        ans1TextField.text = initialans1
+        ans2TextField.text = initialans2
+        ans3TextField.text = initialans3
     }
     
     @IBAction func didTapOnCancel(_ sender: Any) {
@@ -40,10 +56,19 @@ class CreationViewController: UIViewController {
         let questionText = questionField.text!
         let answerText = answerField.text!
         
+        let ans1Text = ans1TextField.text!
+        let ans2Text = ans2TextField.text!
+        let ans3Text = ans3TextField.text!
+        
         if questionText.isEmpty || answerText.isEmpty {
             displayAlert()
         } else {
-            flashcardsController.updateFlashcard(question: questionText, answer: answerText)
+            var isExisting = false
+            if initialQuestion != nil {
+                isExisting = true
+            }
+            
+            flashcardsController.updateFlashcard(question: questionText, answer: answerText, ans1: ans1Text, ans2: ans2Text, ans3: ans3Text, isExisting: isExisting)
             
             dismiss(animated: true)
         }

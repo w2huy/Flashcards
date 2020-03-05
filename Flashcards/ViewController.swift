@@ -11,6 +11,9 @@ import UIKit
 struct Flashcard { //Lab 3 part 1
     var question: String
     var answer:String
+    var ans1:String
+    var ans2:String
+    var ans3:String
 }
 
 class ViewController: UIViewController {
@@ -32,9 +35,10 @@ class ViewController: UIViewController {
     var currentIndex = 0 //Lab 3 part 2
     
     var isFront:Bool = true
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view.
         cardStyle()
         
@@ -45,17 +49,58 @@ class ViewController: UIViewController {
         readSavedFlashcards()
         
         if flashcards.count == 0 {
-            updateFlashcard(question: "What's the capital of Brazill?", answer: "Brasilia")
+            updateFlashcard(question: "What's the capital of Brazill?", answer: "Brasilia", ans1: "Nevada", ans2: "Brasilia", ans3: "Brozil", isExisting: false)
         } else {
             updateNextPrevButtons()
             updateLabels()
         }
     }
     
+    func displayAlert() {
+           let alert = UIAlertController(title: "Cannot have 0 Flashcards", message: "You need to have at least one flashcard at all times", preferredStyle: .alert)
+           
+           alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+           print("Handle Ok logic here")
+           }))
+
+           present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func didTapOnDelete(_ sender: Any) {
+        let alert = UIAlertController(title: "Delete Flashcard", message: "Are you sure you want to delete it?", preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+            self.deleteCurrentFlashcard()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func deleteCurrentFlashcard() {
+        
+        if flashcards.count > 1 {
+            flashcards.remove(at: currentIndex)
+            
+            if currentIndex > flashcards.count - 1 {
+                currentIndex = flashcards.count - 1
+            }
+            
+            updateNextPrevButtons()
+            updateLabels()
+            saveAllFlashcardsToDisk()
+            print("FLASHCARD DELETED")
+        } else {
+            displayAlert()
+        }
+    }
+    
     func readSavedFlashcards() {
         if let dictArray = UserDefaults.standard.array(forKey: "flashcards") as? [[String:String]] {
             let savedCards = dictArray.map { (dictionary) -> Flashcard in
-                return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!)
+                return Flashcard(question: dictionary["question"]!, answer: dictionary["answer"]!, ans1: dictionary["ans1"]!, ans2: dictionary["ans2"]!, ans3: dictionary["ans3"]!)
             }
             
             flashcards.append(contentsOf: savedCards)
@@ -65,7 +110,7 @@ class ViewController: UIViewController {
     func saveAllFlashcardsToDisk() { //Lab 3 part 3
         
         let dictArray = flashcards.map { (card) -> [String: String] in
-            return ["question": card.question, "answer": card.answer]
+            return ["question": card.question, "answer": card.answer, "ans1": card.ans1, "ans2": card.ans2, "ans3": card.ans3]
         }
         
         UserDefaults.standard.set(dictArray, forKey: "flashcards")
@@ -90,6 +135,10 @@ class ViewController: UIViewController {
         
         frontLabel.text = currentFlashcard.question
         backLabel.text  = currentFlashcard.answer
+        
+        btnOptionOne.setTitle(currentFlashcard.ans1, for: .normal)
+        btnOptionTwo.setTitle(currentFlashcard.ans2, for: .normal)
+        btnOptionThree.setTitle(currentFlashcard.ans3, for: .normal)
     }
     
     func updateNextPrevButtons() { //Lab 3 part 2
@@ -121,21 +170,31 @@ class ViewController: UIViewController {
         isFront = !isFront
     }
     
-    func updateFlashcard(question:String, answer:String) {  //Lab 3 part 1
-        let flashcard = Flashcard(question: question, answer: answer)
+    func updateFlashcard(question:String, answer:String, ans1:String, ans2:String, ans3:String, isExisting:Bool) {  //Lab 3 part 1
+        let flashcard = Flashcard(question: question, answer: answer, ans1: ans1, ans2: ans2, ans3: ans3)
         backLabel.text = flashcard.answer
         frontLabel.text = flashcard.question
+        btnOptionOne.setTitle(ans1, for: .normal)
+        btnOptionTwo.setTitle(ans2, for: .normal)
+        btnOptionThree.setTitle(ans3, for: .normal)
         
-        flashcards.append(flashcard)
-        print("Added new flashcard")
-        print("Now we have \(flashcards.count) flashcards")
-        currentIndex = flashcards.count - 1
-        print("Our current index is \(currentIndex)")
         
-        updateNextPrevButtons() //Lab 3 part 2
-        updateLabels() //Lab 3 part 2
         
-        saveAllFlashcardsToDisk() //Lab 3 part 3
+        
+        if isExisting {
+            flashcards[currentIndex] = flashcard
+        } else {
+            flashcards.append(flashcard)
+            print("Added new flashcard")
+            print("Now we have \(flashcards.count) flashcards")
+            currentIndex = flashcards.count - 1
+            print("Our current index is \(currentIndex)")
+            
+            updateNextPrevButtons() //Lab 3 part 2
+            updateLabels() //Lab 3 part 2
+            
+            saveAllFlashcardsToDisk() //Lab 3 part 3
+        }
     }
 
     func buttonStyle(btn:UIButton) {
@@ -180,6 +239,15 @@ class ViewController: UIViewController {
         let navigationController = segue.destination as! UINavigationController
         let creationController = navigationController.topViewController as! CreationViewController
         creationController.flashcardsController = self
+        
+        if segue.identifier == "EditSegue" {
+            creationController.initialQuestion = frontLabel.text
+            creationController.initialAnwser = backLabel.text
+            creationController.initialans1 = btnOptionOne.titleLabel?.text
+            creationController.initialans2 = btnOptionTwo.titleLabel?.text
+            creationController.initialans3 = btnOptionThree.titleLabel?.text
+            
+        }
     }
 }
 
