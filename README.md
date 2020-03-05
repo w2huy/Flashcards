@@ -25,7 +25,7 @@ Our Flashcard app and focus on how to add and customize views to be displayed on
 
 ### App Walk-though
 
-<img src="http://g.recordit.co/DRVdejl2qp.gif" width=200><br>
+<img src="http://g.recordit.co/JV1VrtVgih.gif" width=200><br>
 
 ## Required
 - [X] User can open the creation screen
