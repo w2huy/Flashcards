@@ -30,6 +30,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var btnOptionTwo: UIButton!
     @IBOutlet weak var btnOptionThree: UIButton!
     
+    var correctAnswerButton: UIButton!
+    
     var flashcards = [Flashcard]() //Lab 3 part 1
     
     var currentIndex = 0 //Lab 3 part 2
@@ -122,12 +124,14 @@ class ViewController: UIViewController {
         currentIndex = currentIndex + 1
         updateLabels()
         updateNextPrevButtons()
+        animatedCardOutNext()
     }
     
     @IBAction func didTapOnPrev(_ sender: Any) { //Lab 3 part 2
         currentIndex = currentIndex - 1
         updateLabels()
         updateNextPrevButtons()
+        animatedCardOutPrev()
     }
     
     func updateLabels() { //Lab 3 part 2
@@ -136,9 +140,16 @@ class ViewController: UIViewController {
         frontLabel.text = currentFlashcard.question
         backLabel.text  = currentFlashcard.answer
         
-        btnOptionOne.setTitle(currentFlashcard.ans1, for: .normal)
-        btnOptionTwo.setTitle(currentFlashcard.ans2, for: .normal)
-        btnOptionThree.setTitle(currentFlashcard.ans3, for: .normal)
+        let buttons = [btnOptionOne,btnOptionTwo,btnOptionThree].shuffled()
+        let answers = [currentFlashcard.answer, currentFlashcard.ans1, currentFlashcard.ans3]
+        
+        for (button,answer) in zip(buttons, answers) {
+            button?.setTitle(answer, for: .normal)
+            if answer==currentFlashcard.answer {
+                correctAnswerButton = button
+            }
+        }
+    
     }
     
     func updateNextPrevButtons() { //Lab 3 part 2
@@ -160,14 +171,56 @@ class ViewController: UIViewController {
     
 
     @IBAction func didTapOnFlashcard(_ sender: UITapGestureRecognizer) {
+       flipFlashcard()
+    }
+    
+    func flipFlashcard() { // Lab 4 part 1
         if isFront {
-            frontLabel.isHidden = true
             backLabel.isHidden = false
-        } else {
-            frontLabel.isHidden = false
-            backLabel.isHidden = true
+            UIView.transition(with: card, duration: 0.3, options: .transitionFlipFromRight, animations: {
+            self.frontLabel.isHidden = true
+            })
+       } else {
+           backLabel.isHidden = true
+           UIView.transition(with: card, duration: 0.3, options: .transitionFlipFromRight, animations: {
+           self.frontLabel.isHidden = false
+           })
+       }
+       isFront = !isFront
+    }
+    
+    func animatedCardOutNext() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.card.transform = CGAffineTransform.identity.translatedBy(x: -300.0, y: 0.0)
+        }) { (finished) in
+            self.updateLabels()
+            self.animatedCardInNext()
         }
-        isFront = !isFront
+    }
+    
+    func animatedCardInNext() {
+        card.transform = CGAffineTransform.identity.translatedBy(x: 300.0, y: 0.0)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.card.transform = CGAffineTransform.identity
+        }
+    }
+    
+    func animatedCardOutPrev() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.card.transform = CGAffineTransform.identity.translatedBy(x: 300.0, y: 0.0)
+        }) { (finished) in
+            self.updateLabels()
+            self.animatedCardInPrev()
+        }
+    }
+    
+    func animatedCardInPrev() {
+        card.transform = CGAffineTransform.identity.translatedBy(x: -300.0, y: 0.0)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.card.transform = CGAffineTransform.identity
+        }
     }
     
     func updateFlashcard(question:String, answer:String, ans1:String, ans2:String, ans3:String, isExisting:Bool) {  //Lab 3 part 1
@@ -177,9 +230,6 @@ class ViewController: UIViewController {
         btnOptionOne.setTitle(ans1, for: .normal)
         btnOptionTwo.setTitle(ans2, for: .normal)
         btnOptionThree.setTitle(ans3, for: .normal)
-        
-        
-        
         
         if isExisting {
             flashcards[currentIndex] = flashcard
@@ -193,7 +243,7 @@ class ViewController: UIViewController {
             updateNextPrevButtons() //Lab 3 part 2
             updateLabels() //Lab 3 part 2
             
-            saveAllFlashcardsToDisk() //Lab 3 part 3
+            saveAllFlashcardsToDisk() //Lab 3 pa rt 3
         }
     }
 
@@ -205,6 +255,15 @@ class ViewController: UIViewController {
     }
     
     func cardStyle() {
+        
+        card.alpha = 0.0 // Lab 4 opt part 1
+        card.transform = CGAffineTransform.identity.scaledBy(x: 0.75, y: 0.75)
+        
+        UIView.animate(withDuration: 0.6, delay: 0.5, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
+            self.card.alpha = 1.0
+            self.card.transform = CGAffineTransform.identity
+        })
+        
         card.layer.cornerRadius = 20.0
         card.layer.shadowRadius = 15.0
         card.layer.shadowOpacity = 0.2
@@ -215,24 +274,30 @@ class ViewController: UIViewController {
     }
     
     @IBAction func didTapOptionOne(_ sender: Any) {
-        btnOptionOne.isHidden = true
+        if btnOptionOne == correctAnswerButton {
+            flipFlashcard()
+        } else {
+            frontLabel.isHidden = false
+            backLabel.isHidden = false
+        }
     }
     
     @IBAction func didTapOptionTwo(_ sender: Any) {
-        if isFront {
-            frontLabel.isHidden = true
-            backLabel.isHidden = false
+        if btnOptionTwo == correctAnswerButton {
+            flipFlashcard()
         } else {
             frontLabel.isHidden = false
-            backLabel.isHidden = true
+            backLabel.isHidden = false
         }
-        isFront = !isFront
-        btnOptionOne.isHidden = false
-        btnOptionThree.isHidden = false
     }
     
     @IBAction func didTapOptionThree(_ sender: Any) {
-        btnOptionThree.isHidden = true
+        if btnOptionThree == correctAnswerButton {
+            flipFlashcard()
+        } else {
+            frontLabel.isHidden = false
+            backLabel.isHidden = false
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
