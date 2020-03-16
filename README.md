@@ -5,11 +5,11 @@
 ### App Description
 You can make your app really enjoyable to use by making it very responsive and playful. We're going to do that with our Flashcards app by adding images and animations. This lab incorporates the following required and optional steps:
 
-Add assets
-Animations everywhere
-(Optional) Styling the card
-(Optional) Multiple screen size support
-(Optional) Multiple choice randomness
+* Add assets
+* Animations everywhere
+* (Optional) Styling the card
+* (Optional) Multiple screen size support
+* (Optional) Multiple choice randomness
 
 ### App Walk-though
 
