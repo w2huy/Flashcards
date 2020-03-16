@@ -1,5 +1,32 @@
 ## Flashcards
 
+## Lab 4
+
+### App Description
+You can make your app really enjoyable to use by making it very responsive and playful. We're going to do that with our Flashcards app by adding images and animations. This lab incorporates the following required and optional steps:
+
+Add assets
+Animations everywhere
+(Optional) Styling the card
+(Optional) Multiple screen size support
+(Optional) Multiple choice randomness
+
+### App Walk-though
+
+<img src="https://recordit.co/E7pI1PlUmn.gif" width=200><br>
+
+## Required
+- [x] User should see the app icon 
+- [x] User should see a splash screen
+- [x] User should see an flip animation when revealing the answer
+- [x] User should see a slide animation when going to the next flashcard
+- [x] User should see a slide animation when going to the previous flashcard
+- [x] Push code to GitHub
+## Optional
+- [x] User should see a nicer flaschard with rounded corners, shadows, and animating when showing the first time
+- [x] User should see all views properly layout when using the app on a phone of different sizes
+- [x] Correct answer in multiple choice should be random
+
 ## Lab 3
 
 ### App Description
